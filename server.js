@@ -30,29 +30,20 @@ const fruits = require('./db/fruits');
   //Post unverified user
   app.post('/api/checkUser', async (req, res) => {
     const { phoneNumber } = req.body;
-    try {
-
-      await fruits.find({ _id: "645fb3a8690f03930224820b" }, (error, data) => {
-        if (error) {
-          console.error(error);
-          res.status(500).send('Something broke!');
-        }
-        console.log(data[0])
-        res.status(200).json(data)
-      })   //.lean().select("_id role")
-      // const userData = await user.find({phoneNumber:phoneNumber})
+    try {  
+      const userData = await user.find({phoneNumber:phoneNumber})
       
-      // if (_.isEmpty(userData)) {
-      //   user.create({ phoneNumber }, async (error, data) => {
-      //     if (error) {
-      //       console.error(error);
-      //       res.status(500).send('Something broke!');
-      //     }
-      //     res.status(201)       
-      //   })
-      // } else {
-      //   res.status(201)
-      // }
+      if (_.isEmpty(userData)) {
+        user.create({ phoneNumber }, async (error, data) => {
+          if (error) {
+            console.error(error);
+            res.status(500).send('Something broke!');
+          }
+          res.status(201)       
+        })
+      } else {
+        res.status(201)
+      }
       
     }
     catch(e) {
@@ -62,13 +53,22 @@ const fruits = require('./db/fruits');
 
   app.get('/api/getFruitsData', async (req, res) => {
     try {
-      const fruitsInStore = await fruits.find({_id: '645fb3a8690f03930224820b'})
-      console.log( fruits.find({_id: '645fb3a8690f03930224820b'}))
-      if (_.isEmpty(fruitsInStore)) {
-        res.status(404).send('Out of stock')
-      } else {
-        res.status(200).json(fruitsInStore)
-      }  //.lean().select("_id role")
+
+      await fruits.find({ _id: "645fb3a8690f03930224820b" }, (error, data) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send('Something broke!');
+        }
+        console.log(data[0])
+        res.status(200).json(data)
+      })
+      // const fruitsInStore = await fruits.find({_id: '645fb3a8690f03930224820b'})
+      // console.log( fruits.find({_id: '645fb3a8690f03930224820b'}))
+      // if (_.isEmpty(fruitsInStore)) {
+      //   res.status(404).send('Out of stock')
+      // } else {
+      //   res.status(200).json(fruitsInStore)
+      // }  //.lean().select("_id role")
       
     }
     catch(e) {
