@@ -31,19 +31,28 @@ const fruits = require('./db/fruits');
   app.post('/api/checkUser', async (req, res) => {
     const { phoneNumber } = req.body;
     try {
-      const userData = await user.find({phoneNumber:phoneNumber})
+
+      await fruits.find({ _id: "645fb3a8690f03930224820b" }, (error, data) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send('Something broke!');
+        }
+        console.log(data)
+        res.status(200).json(data)
+      })   //.lean().select("_id role")
+      // const userData = await user.find({phoneNumber:phoneNumber})
       
-      if (_.isEmpty(userData)) {
-        user.create({ phoneNumber }, async (error, data) => {
-          if (error) {
-            console.error(error);
-            res.status(500).send('Something broke!');
-          }
-          res.status(201)       
-        })
-      } else {
-        res.status(201)
-      }
+      // if (_.isEmpty(userData)) {
+      //   user.create({ phoneNumber }, async (error, data) => {
+      //     if (error) {
+      //       console.error(error);
+      //       res.status(500).send('Something broke!');
+      //     }
+      //     res.status(201)       
+      //   })
+      // } else {
+      //   res.status(201)
+      // }
       
     }
     catch(e) {
