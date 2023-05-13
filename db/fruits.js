@@ -11,4 +11,4 @@ const fruitModel = new Schema({
 
 });
 
-module.exports = mongoose.model('items', fruitModel);
+module.exports = mongoose.model('fruits', fruitModel);
