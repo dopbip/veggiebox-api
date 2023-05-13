@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const fruitModel = new Schema({
-  itemName: { type: String, default: ''},
-  itemCategory: { type: String, default: '' },
-  itemQty: { type: String, },
+  name: { type: String, default: ''},
+  pack_price: { type: String, default: '' },
+  packed_items: { type: String, default: '' },
+  qty_in_store: { type: String, default: '' },
+  emoji: { type: String, default: '' },
+  key_word: { type: Array, default: [] },
+
 });
 
 module.exports = mongoose.model('items', fruitModel);
