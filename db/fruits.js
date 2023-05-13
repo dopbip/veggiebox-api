@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const fruitModel = new Schema({
   name: { type: String, default: ''},
-  pack_price: { type: Number, },
-  packed_items: { type: Number, },
-  qty_in_store: { type: Number},
+  pack_price: { type: String, },
+  packed_items: { type: String, },
+  qty_in_store: { type: String},
   emoji: { type: String,  },
-  key_word: { type: Array },
+  key_word: { type: String },
 
 });
 
