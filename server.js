@@ -53,7 +53,7 @@ const fruits = require('./db/fruits')
 
   app.post('/api/getFruitsData', async (req, res) => {
     try {
-      await fruits.find({ qty_in_store: { $gt: 0 } }, (error, data) => {
+      await fruits.find({"qty_in_store": { $gt: 0 }}, (error, data) => {
         if (error) {
           console.error(error);
           res.status(500).send('Something broke!');
