@@ -53,7 +53,7 @@ const fruits = require('./db/fruits');
 
   app.get('/api/getFruitsData', async (req, res) => {
     try {
-      const fruitsInStore = await fruits.find({name: 'Mango'})
+      const fruitsInStore = await fruits.find({_id: '645fb3a8690f03930224820b'})
       if (_.isEmpty(fruitsInStore)) {
         res.status(404).send('Out of stock')
       } else {
