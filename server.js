@@ -17,7 +17,6 @@ const {
   } = require('./util');
 const user = require('./db/users');
 const fruits = require('./db/fruits');
-const fruits = require('./db/fruits');
   const app = express()
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json());
