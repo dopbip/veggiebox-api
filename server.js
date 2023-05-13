@@ -51,7 +51,7 @@ const fruits = require('./db/fruits')
     }
   })
 
-  app.post('/api/getFruitsData', async (req, res) => {
+  app.get('/api/getFruitsData', async (req, res) => {
     try {
       await fruits.find({}, (error, data) => {
         if (error) {
