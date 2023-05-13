@@ -16,7 +16,8 @@ const {
     verifyPassword
   } = require('./util');
 const user = require('./db/users');
-const fruits = require('./db/fruits')
+const fruits = require('./db/fruits');
+const fruits = require('./db/fruits');
   const app = express()
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json());
@@ -53,14 +54,12 @@ const fruits = require('./db/fruits')
 
   app.get('/api/getFruitsData', async (req, res) => {
     try {
-      await fruits.find({name: 'Banana'}, (error, data) => {
-        if (error) {
-          console.error(error);
-          res.status(500).send('Something broke!');
-        }
-         console.log(data)
-        res.status(200).json(data)
-      })   //.lean().select("_id role")
+      const fruits = await fruits.find({name: 'Banana'})
+      if (_.isEmpty(fruits)) {
+        res.status(404).send('Out of stock')
+      } else {
+        res.status(200).json(fruits)
+      }  //.lean().select("_id role")
       
     }
     catch(e) {
