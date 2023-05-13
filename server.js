@@ -54,11 +54,11 @@ const fruits = require('./db/fruits');
 
   app.get('/api/getFruitsData', async (req, res) => {
     try {
-      const fruits = await fruits.find({name: 'Banana'})
-      if (_.isEmpty(fruits)) {
+      const fruitsInStore = await fruits.find({name: 'Banana'})
+      if (_.isEmpty(fruitsInStore)) {
         res.status(404).send('Out of stock')
       } else {
-        res.status(200).json(fruits)
+        res.status(200).json(fruitsInStore)
       }  //.lean().select("_id role")
       
     }
