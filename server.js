@@ -59,7 +59,7 @@ const fruits = require('./db/fruits');
           console.error(error);
           res.status(500).send('Something broke!');
         }
-        console.log(data[0])
+        console.log(data)
         res.status(200).json(data)
       })
       // const fruitsInStore = await fruits.find({_id: '645fb3a8690f03930224820b'})
