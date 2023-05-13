@@ -30,7 +30,7 @@ const fruits = require('./db/fruits');
   //Post unverified user
   app.post('/api/checkUser', async (req, res) => {
     const { phoneNumber } = req.body;
-    try {  
+    try {
       const userData = await user.find({phoneNumber:phoneNumber})
       
       if (_.isEmpty(userData)) {
@@ -53,22 +53,12 @@ const fruits = require('./db/fruits');
 
   app.get('/api/getFruitsData', async (req, res) => {
     try {
-
-      await fruits.create({}, (error, data) => {
-        if (error) {
-          console.error(error);
-          res.status(500).send('Something broke!');
-        }
-        console.log(data)
-        res.status(200).json(data)
-      })
-      // const fruitsInStore = await fruits.find({_id: '645fb3a8690f03930224820b'})
-      // console.log( fruits.find({_id: '645fb3a8690f03930224820b'}))
-      // if (_.isEmpty(fruitsInStore)) {
-      //   res.status(404).send('Out of stock')
-      // } else {
-      //   res.status(200).json(fruitsInStore)
-      // }  //.lean().select("_id role")
+      const fruitsInStore = await fruits.find({})
+      if (_.isEmpty(fruitsInStore)) {
+        res.status(404).send('Out of stock')
+      } else {
+        res.status(200).json(fruitsInStore)
+      }  //.lean().select("_id role")
       
     }
     catch(e) {
