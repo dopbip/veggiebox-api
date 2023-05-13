@@ -37,7 +37,7 @@ const fruits = require('./db/fruits');
           console.error(error);
           res.status(500).send('Something broke!');
         }
-        console.log(data)
+        console.log(data[0])
         res.status(200).json(data)
       })   //.lean().select("_id role")
       // const userData = await user.find({phoneNumber:phoneNumber})
