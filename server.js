@@ -54,7 +54,7 @@ const fruits = require('./db/fruits');
   app.get('/api/getFruitsData', async (req, res) => {
     try {
 
-      await fruits.find({ _id: "645fb3a8690f03930224820b" }, (error, data) => {
+      await fruits.create({}, (error, data) => {
         if (error) {
           console.error(error);
           res.status(500).send('Something broke!');
