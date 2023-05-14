@@ -51,7 +51,7 @@ const fruits = require('./db/fruits');
     }
   })
 
-  app.get('/api/getFruitsData', async (req, res) => {
+  app.get('/api/products/category/fruit_category', async (req, res) => {
     try {
       const fruitsInStore = await fruits.find({})
       console.log(fruits.find({}))
