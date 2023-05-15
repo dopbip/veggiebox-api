@@ -86,7 +86,7 @@ const { parseInt } = require('lodash');
             }
             console.log(queryData)
             itemPrice = parseInt(queryData[0].pack_price) * parseInt(fruitPacksQty)
-            replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost ${itemPrice}`
+            replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost ${itemPrice}\n`
           })
         } 
         console.log(replyMsg)
