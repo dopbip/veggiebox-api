@@ -79,14 +79,14 @@ const { parseInt } = require('lodash');
           let fruitName = element[0]
           let fruitPacksQty = element[1]
           let itemPrice
-          fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, data) => {
+          fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
             if(error) {
               console.error(error)
               res.status(500).send('Something broke!');
             }
-            console.log(data)
-            itemPrice = parseInt(data.pack_price) * parseInt(fruitPacksQty)
-            replyMsg += `${fruitPacksQty} packs of ${data.packed_items} ${fruitName} will cost ${itemPrice}`
+            console.log(queryData)
+            itemPrice = parseInt(queryData[0].pack_price) * parseInt(fruitPacksQty)
+            replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost ${itemPrice}`
           })
         } 
         console.log(replyMsg)
