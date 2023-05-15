@@ -71,8 +71,8 @@ const fruits = require('./db/fruits');
     // let { data } = req.form
     // let { categoryId } = req.form
     console.log('@@@@')
-    console.log(req.form)
-    //console.log(categoryId)
+    console.log(req)
+    res.status(200).json(req)
   })
 
   async function connect() {
