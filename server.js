@@ -71,6 +71,7 @@ const fruits = require('./db/fruits');
     let { data } = req.body
     let { categoryId } = req.body
     console.log('@@@@')
+    console.log(data)
     console.log(categoryId)
   })
 
