@@ -68,7 +68,7 @@ const { parseInt } = require('lodash');
     }
   })
 
-  app.post('/api/products/price', (req,res) => {
+  app.post('/api/products/price', async(req,res) => {
     let { data } = req.body
     let { categoryId } = req.body
     switch (categoryId) {
@@ -79,7 +79,7 @@ const { parseInt } = require('lodash');
           let fruitName = element[0]
           let fruitPacksQty = element[1]
           let itemPrice
-          fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
+          await fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
             if(error) {
               console.error(error)
               res.status(500).send('Something broke!');
