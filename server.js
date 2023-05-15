@@ -17,6 +17,7 @@ const {
   } = require('./util');
 const user = require('./db/users');
 const fruits = require('./db/fruits');
+const { parseInt } = require('lodash');
   const app = express()
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json());
@@ -70,9 +71,33 @@ const fruits = require('./db/fruits');
   app.post('/api/products/price', (req,res) => {
     let { data } = req.body
     let { categoryId } = req.body
-    console.log('@@@@')
-    console.log(data)
-    console.log(categoryId)
+    switch (categoryId) {
+      case 'fruit_category':
+        let replyMsg = ``
+        for (let i = 0; i < data.length; i++) {
+          const element = data[i];
+          let fruitName = element[0]
+          let fruitPacksQty = element[1]
+          let itemPrice
+          fruits.find({name:fruitName}, (error, data) => {
+            if(error) {
+              console.error(error)
+              res.status(500).send('Something broke!');
+            }
+            console.log(data)
+            itemPrice = parseInt(data.pack_price) * parseInt(fruitPacksQty)
+            replyMsg += `${fruitPacksQty} packs of ${data.packed_items} ${fruitName} will cost ${itemPrice}`
+          })
+        } 
+        console.log(replyMsg)
+        res.status(200).send(replyMsg)
+        break;
+      case 'veg_category':
+        
+        break;
+      default:
+        break;
+    }
     res.status(200)
   })
 
