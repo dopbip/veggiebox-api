@@ -79,7 +79,7 @@ const { parseInt } = require('lodash');
           let fruitName = element[0]
           let fruitPacksQty = element[1]
           let itemPrice
-          fruits.find({key_word:{$elemMatch: fruitName.toLowerCase()}}, (error, data) => {
+          fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, data) => {
             if(error) {
               console.error(error)
               res.status(500).send('Something broke!');
