@@ -68,8 +68,8 @@ const fruits = require('./db/fruits');
   })
 
   app.post('/api/products/price', (req,res) => {
-    // let { data } = req.body
-    // let { categoryId } = req.body
+    let { data } = req.body
+    let { categoryId } = req.body
     console.log('@@@@')
     console.log(data)
     console.log(categoryId)
