@@ -68,11 +68,11 @@ const fruits = require('./db/fruits');
   })
 
   app.post('/api/products/price', (req,res) => {
-    let { data } = req.form
-    let { categoryId } = req.form
+    // let { data } = req.form
+    // let { categoryId } = req.form
     console.log('@@@@')
-    console.log(data)
-    console.log(categoryId)
+    console.log(req.form)
+    //console.log(categoryId)
   })
 
   async function connect() {
