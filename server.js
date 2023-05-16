@@ -69,7 +69,7 @@ const { parseInt } = require('lodash');
   })
 
   app.post('/api/products/price/fruit_category', async(req,res) => {
-    let { data } = req.body
+    let  data = req.body
     console.log(data)
         let replyMsg = ``
         for (let i = 0; i < data.length; i++) {
