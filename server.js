@@ -80,7 +80,7 @@ const { parseInt } = require('lodash');
           await fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
             if(error) {
               console.error(error)
-              res.status(500).send('Something broke!');
+              res.status(500).send('Something brokee!');
             }
             console.log(queryData)
             itemPrice = parseInt(queryData[0].pack_price) * parseInt(fruitPacksQty)
