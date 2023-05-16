@@ -68,11 +68,8 @@ const { parseInt } = require('lodash');
     }
   })
 
-  app.post('/api/products/price', async(req,res) => {
+  app.post('/api/products/price/fruit_category', async(req,res) => {
     let { data } = req.body
-    let { categoryId } = req.body
-    switch (categoryId) {
-      case 'fruit_category':
         let replyMsg = ``
         for (let i = 0; i < data.length; i++) {
           const element = data[i];
@@ -91,13 +88,6 @@ const { parseInt } = require('lodash');
         } 
         console.log(replyMsg)
         res.status(200).send(replyMsg)
-        break;
-      case 'veg_category':
-        
-        break;
-      default:
-        break;
-    }
     res.status(200)
   })
 
