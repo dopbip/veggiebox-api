@@ -82,9 +82,13 @@ const { parseInt } = require('lodash');
               console.error(error)
               res.status(500).send('Something brokee!');
             }
-            console.log(queryData)
-            itemPrice = parseInt(queryData[0].pack_price) * parseInt(fruitPacksQty)
-            replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`
+            if(parseInt(fruitPacksQty) < 1) {
+              itemPrice = parseInt(queryData[0].pack_price)
+              replyMsg += `1 packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`
+            } else
+              {console.log(queryData)
+              itemPrice = parseInt(queryData[0].pack_price) * parseInt(fruitPacksQty)
+              replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`}
           })
         } 
         console.log(replyMsg)
