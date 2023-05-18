@@ -98,7 +98,7 @@ const { parseInt } = require('lodash');
 
   app.post('/api/products/saveOrder', async (req, res) => {
     const data = req.body
-    console.log(data)
+    console.log(JSON.stringify(data, undefined,2))
     res.send(200)
   })
   async function connect() {
