@@ -96,6 +96,11 @@ const { parseInt } = require('lodash');
     res.status(200)
   })
 
+  app.post('/api/products/saveOrder', async (req, res) => {
+    const data = req.body
+    console.log(data)
+    res.send(200)
+  })
   async function connect() {
     try {
       mongoose.Promise = global.Promise;
