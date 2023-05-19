@@ -92,7 +92,7 @@ const orders = require('./db/orders')
                 replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`}
             })
           } else {
-            replyMsg += `Please the quantity of packs you need\n _eg. 2 pack bananas_`
+            return replyMsg += `Please the quantity of packs you need\n _eg. 2 pack bananas_`
           }
           
           
