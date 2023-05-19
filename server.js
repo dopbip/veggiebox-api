@@ -99,6 +99,7 @@ const orders = require('./db/orders')
   app.post('/api/products/saveOrder', async (req, res) => {
     const data = req.body
     console.log(JSON.stringify(data, undefined,2))
+    console.log(data['oderdetails']['cart'])
     const {phoneNumber} = data['oderdetails']
     const {location} = data['oderdetails']
     let orderedItemList = []
