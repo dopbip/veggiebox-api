@@ -77,7 +77,7 @@ const orders = require('./db/orders')
           let fruitName = element[0]
           let fruitPacksQty = element[1]
           let itemPrice
-          if (fruitName != undefined) {
+          if (fruitName != undefined || fruitName != null) {
             await fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
               if(error) {
                 console.error(error)
