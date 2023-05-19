@@ -144,7 +144,7 @@ const orders = require('./db/orders')
       const odersDocument = await orders.create(orderDetails)
       odersDocument.save()
         .then(()=> {
-          res.status(200).json(orderedItemList)
+          res.status(200).json({orderedItemList})
         })
         .catch((error) => {
           console.log(error)
