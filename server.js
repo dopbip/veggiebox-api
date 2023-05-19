@@ -75,27 +75,21 @@ const orders = require('./db/orders')
         for (let i = 0; i < data.length; i++) {
           const element = data[i];
           let fruitName = element[0]
-          let fruitPacksQty = element[1]
+          let itemPacksQty = element[1]
           let itemPrice
-          if (fruitName != undefined || fruitName != null) {
-            await fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
-              if(error) {
-                console.error(error)
-                res.status(500).send('Something brokee!');
-              }
-              if(parseInt(fruitPacksQty) < 1 || fruitPacksQty == null) {
-                itemPrice = parseInt(queryData[0].pack_price)
-                replyMsg += `1 packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`
-              } else
-                {console.log(queryData)
-                itemPrice = parseInt(queryData[0].pack_price) * parseInt(fruitPacksQty)
-                replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`}
-            })
-          } else {
-            return replyMsg += `Please the quantity of packs you need\n _eg. 2 pack bananas_`
-          }
-          
-          
+          await fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
+            if(error) {
+              console.error(error)
+              res.status(500).send('Something brokee!');
+            }
+            if(parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
+              itemPrice = parseInt(queryData[0].pack_price)
+              replyMsg += `1 packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`
+            } else
+              {console.log(queryData)
+              itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty)
+              replyMsg += `${itemPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`}
+          })
         } 
         console.log(replyMsg)
         res.status(200).send(replyMsg)
@@ -105,7 +99,59 @@ const orders = require('./db/orders')
   app.post('/api/products/saveOrder', async (req, res) => {
     const data = req.body
     console.log(JSON.stringify(data, undefined,2))
+    const {phoneNumber} = data['oderdetails']
+    const {location} = data['oderdetails']
+    let orderedItemList = []
+    let totalAmount = 0
+    for (let i = 0; i < data['oderdetails']['cart'].length; i++) {
+      const element = data[i];
+      let itemName = element[0]
+      let itemPacksQty = element[1]
+      let itemPrice
+      await fruits.find({key_word: { $in: [itemName.toLowerCase()]}}, async(error, queryData) => {
+        if(error) {
+          console.error(error)
+          res.status(500).send('Something brokee!');
+        }
+        if(parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
+          itemPrice = parseInt(queryData[0].pack_price)
+          //replyMsg += `1 packs of ${queryData[0].packed_items} ${itemName} will cost k${itemPrice}\n`
+          orderedItemList.push({
+            "itemName": itemName,
+            "itemPrice": itemPrice,
+            "itemPacksQty": itemPacksQty
+          })
+          totalAmount += itemPrice
+        } else
+          {console.log(queryData)
+          itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty)
+          //replyMsg += `${itemPacksQty} packs of ${queryData[0].packed_items} ${itemName} will cost k${itemPrice}\n`
+          orderedItemList.push({
+            "itemName": itemName,
+            "itemPrice": itemPrice,
+            "itemPacksQty": itemPacksQty
+          })
+          totalAmount += itemPrice
+        }
+      })
+      // Create order
+      const orderDetails = Object.assign({}, {
+        phoneNumber,
+        location,
+        itemOrdered: orderedItemList,
+        totalAmount: totalAmount
+      })
+      const odersDocument = await orders.create(orderDetails)
+      odersDocument.save()
+        .then(()=> {
+          res.status(200).json(orderedItemList)
+        })
+        .catch((error) => {
+          console.log(error)
+          res.status(500).send("Something nt right, we are looking into it")
+        })
 
+    } 
     res.status(200).json(data)
   })
   async function connect() {
