@@ -106,7 +106,7 @@ const orders = require('./db/orders')
     let orderedItemList = []
     let totalAmount = 0
     for (let i = 0; i < data['oderdetails']['cart'].length; i++) {
-      const element = data[i];
+      const element = data['oderdetails']['cart'][i];
       console.log(element)
       console.log('################')
       let itemName = element[0]
