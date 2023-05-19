@@ -138,8 +138,10 @@ const orders = require('./db/orders')
           totalAmount += itemPrice
         }
       })
-      // Create order
-      const orderDetails = Object.assign({}, {
+
+    }
+       // Create order
+       const orderDetails = Object.assign({}, {
         phoneNumber,
         location,
         itemOrdered: orderedItemList,
@@ -154,9 +156,6 @@ const orders = require('./db/orders')
           console.log(error)
           res.status(500).send("Something nt right, we are looking into it")
         })
-
-    } 
-    res.status(200).json(data)
   })
   async function connect() {
     try {
