@@ -100,6 +100,7 @@ const orders = require('./db/orders')
     const data = req.body
     console.log(JSON.stringify(data, undefined,2))
     console.log(data['oderdetails']['cart'])
+    console.log('################')
     const {phoneNumber} = data['oderdetails']
     const {location} = data['oderdetails']
     let orderedItemList = []
