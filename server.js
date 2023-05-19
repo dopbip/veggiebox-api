@@ -8,7 +8,7 @@ const dayjs = require('dayjs');
 const cookieParser = require('cookie-parser');
 const jwtDecode = require('jwt-decode');
 const mongoose = require('mongoose');
-
+const { parseInt } = require('lodash');
 const {
     createToken,
     createTokenMobileApp,
@@ -17,7 +17,7 @@ const {
   } = require('./util');
 const user = require('./db/users');
 const fruits = require('./db/fruits');
-const { parseInt } = require('lodash');
+const orders = require('./db/orders')
   const app = express()
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json());
@@ -77,19 +77,25 @@ const { parseInt } = require('lodash');
           let fruitName = element[0]
           let fruitPacksQty = element[1]
           let itemPrice
-          await fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
-            if(error) {
-              console.error(error)
-              res.status(500).send('Something brokee!');
-            }
-            if(parseInt(fruitPacksQty) < 1 || fruitPacksQty == null) {
-              itemPrice = parseInt(queryData[0].pack_price)
-              replyMsg += `1 packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`
-            } else
-              {console.log(queryData)
-              itemPrice = parseInt(queryData[0].pack_price) * parseInt(fruitPacksQty)
-              replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`}
-          })
+          if (fruitName != undefined) {
+            await fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
+              if(error) {
+                console.error(error)
+                res.status(500).send('Something brokee!');
+              }
+              if(parseInt(fruitPacksQty) < 1 || fruitPacksQty == null) {
+                itemPrice = parseInt(queryData[0].pack_price)
+                replyMsg += `1 packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`
+              } else
+                {console.log(queryData)
+                itemPrice = parseInt(queryData[0].pack_price) * parseInt(fruitPacksQty)
+                replyMsg += `${fruitPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`}
+            })
+          } else {
+            replyMsg += `Please the quantity of packs you need\n _eg. 2 pack bananas_`
+          }
+          
+          
         } 
         console.log(replyMsg)
         res.status(200).send(replyMsg)
@@ -99,6 +105,7 @@ const { parseInt } = require('lodash');
   app.post('/api/products/saveOrder', async (req, res) => {
     const data = req.body
     console.log(JSON.stringify(data, undefined,2))
+
     res.status(200).json(data)
   })
   async function connect() {
