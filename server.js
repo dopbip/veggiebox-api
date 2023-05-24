@@ -127,29 +127,29 @@ const orders = require('./db/orders')
       let itemName = element[0]
       let itemPacksQty = element[1]
       let itemPrice
-      let package_type
+      let packageType
 
       try {
         const queryData = await fruits.find({ key_word: { $in: [itemName.toLowerCase()] } }).exec();
         
         if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
           itemPrice = parseInt(queryData[0].pack_price);
-          package_type = queryData[0].package_type
+          packageType = queryData[0].package_type
           orderedItemList.push({
             "itemName": itemName,
             "itemPrice": itemPrice,
             "itemPacksQty": itemPacksQty,
-            "package_type": package_type
+            "packageType": packageType
           })
           totalAmount += itemPrice
         } else {
           itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty)
-          package_type = queryData[0].package_type
+          packageType = queryData[0].package_type
           orderedItemList.push({
             "itemName": itemName,
             "itemPrice": itemPrice,
             "itemPacksQty": itemPacksQty,
-            "package_type": package_type
+            "packageType": packageType
           })
           totalAmount += itemPrice
         }
