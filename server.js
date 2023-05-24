@@ -78,19 +78,29 @@ const orders = require('./db/orders')
           let fruitName = element[0]
           let itemPacksQty = element[1]
           let itemPrice
-          await fruits.find({$and: [{key_word: { $in: [fruitName.toLowerCase()]}}, { qty_in_store: {$gt: 0}}]}, (error, queryData) => {
-            if(error) {
-              console.error(error)
-              res.status(500).send('Something brokee!');
+          try {
+            const queryData = await fruits
+              .find({
+                $and: [
+                  { key_word: { $in: [fruitName.toLowerCase()] } },
+                  { qty_in_store: { $gt: 0 } }
+                ]
+              })
+              .exec();
+          
+            if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
+              itemPrice = parseInt(queryData[0].pack_price);
+              replyMsg += `1 pack of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
+            } else {
+              console.log(queryData);
+              itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty);
+              replyMsg += `${itemPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
             }
-            if(parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
-              itemPrice = parseInt(queryData[0].pack_price)
-              replyMsg += `1 packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`
-            } else
-              {console.log(queryData)
-              itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty)
-              replyMsg += `${itemPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`}
-          })
+          } catch (error) {
+            console.error(error);
+            res.status(500).send('Something broke!');
+          }
+          
         } 
         console.log(replyMsg)
         res.status(200).send(replyMsg)
