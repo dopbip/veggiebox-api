@@ -77,7 +77,7 @@ const orders = require('./db/orders')
           let fruitName = element[0]
           let itemPacksQty = element[1]
           let itemPrice
-          await fruits.find({key_word: { $in: [fruitName.toLowerCase()]}}, (error, queryData) => {
+          await fruits.find({$and: [{key_word: { $in: [fruitName.toLowerCase()]}}, { qty_in_store: {$gt: 0}}]}, (error, queryData) => {
             if(error) {
               console.error(error)
               res.status(500).send('Something brokee!');
