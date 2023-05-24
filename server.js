@@ -87,17 +87,19 @@ const orders = require('./db/orders')
                 ]
               })
               .exec();
-              console.log("UUUUUUU")
-              console.log(queryData)
-              console.log("UUUUUUU")
-            if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
-              itemPrice = parseInt(queryData[0].pack_price);
-              replyMsg += `1 pack of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
-            } else {
-              console.log(queryData);
-              itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty);
-              replyMsg += `${itemPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
-            }
+              if (_.isEmpty(queryData)) {
+                replyMsg += `${fruitName} out of stock, will notify you when available.`
+              } else {
+                if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
+                  itemPrice = parseInt(queryData[0].pack_price);
+                  replyMsg += `1 pack of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
+                } else {
+                  console.log(queryData);
+                  itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty);
+                  replyMsg += `${itemPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
+                }
+              }
+           
           } catch (error) {
             console.error(error);
             res.status(500).send('Something broke!');
