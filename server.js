@@ -127,24 +127,20 @@ const orders = require('./db/orders')
       let itemName = element[0]
       let itemPacksQty = element[1]
       let itemPrice
-      await fruits.find({key_word: { $in: [itemName.toLowerCase()]}}, async(error, queryData) => {
-        if(error) {
-          console.error(error)
-          res.status(500).send('Something brokee!');
-        }
-        if(parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
-          itemPrice = parseInt(queryData[0].pack_price)
-          //replyMsg += `1 packs of ${queryData[0].packed_items} ${itemName} will cost k${itemPrice}\n`
+
+      try {
+        const queryData = await fruits.find({ key_word: { $in: [itemName.toLowerCase()] } }).exec();
+        
+        if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
+          itemPrice = parseInt(queryData[0].pack_price);
           orderedItemList.push({
             "itemName": itemName,
             "itemPrice": itemPrice,
             "itemPacksQty": itemPacksQty
           })
           totalAmount += itemPrice
-        } else
-          {console.log(queryData)
+        } else {
           itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty)
-          //replyMsg += `${itemPacksQty} packs of ${queryData[0].packed_items} ${itemName} will cost k${itemPrice}\n`
           orderedItemList.push({
             "itemName": itemName,
             "itemPrice": itemPrice,
@@ -152,7 +148,10 @@ const orders = require('./db/orders')
           })
           totalAmount += itemPrice
         }
-      })
+      } catch (error) {
+        console.error(error);
+        res.status(500).send('Something broke!');
+      }
 
     }
        // Create order
