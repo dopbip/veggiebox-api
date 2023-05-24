@@ -92,11 +92,11 @@ const orders = require('./db/orders')
               } else {
                 if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
                   itemPrice = parseInt(queryData[0].pack_price);
-                  replyMsg += `1 pack of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
+                  replyMsg += `1 ${queryData.package_type} of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
                 } else {
                   console.log(queryData);
                   itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty);
-                  replyMsg += `${itemPacksQty} packs of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
+                  replyMsg += `${itemPacksQty} ${queryData.package_type} of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
                 }
               }
            
