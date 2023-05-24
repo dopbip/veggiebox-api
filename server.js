@@ -88,7 +88,7 @@ const orders = require('./db/orders')
               })
               .exec();
               if (_.isEmpty(queryData)) {
-                replyMsg += `${fruitName} out of stock, will notify you when available.`
+                replyMsg += `${fruitName} _out of stock, will notify you when available._`
               } else {
                 if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
                   itemPrice = parseInt(queryData[0].pack_price);
