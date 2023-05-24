@@ -73,6 +73,7 @@ const orders = require('./db/orders')
     console.log(data)
         let replyMsg = ``
         for (let i = 0; i < data.length; i++) {
+          console.log("UUUUUUU")
           const element = data[i];
           let fruitName = element[0]
           let itemPacksQty = element[1]
