@@ -54,7 +54,7 @@ const orders = require('./db/orders')
 
   app.get('/api/products/category/fruit_category', async (req, res) => {
     try {
-      const fruitsInStore = await fruits.find({})
+      const fruitsInStore = await fruits.find({qty_in_store: {$gt: 0}})
       console.log(fruits.find({}))
       if (_.isEmpty(fruitsInStore)) {
         res.status(404).send('Out of stock')
