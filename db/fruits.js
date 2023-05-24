@@ -6,6 +6,7 @@ const fruitModel = new Schema({
   pack_price: { type: Number, },
   packed_items: { type: Number, },
   qty_in_store: { type: Number},
+  package_type: {type: String},
   emoji: { type: String,  },
   key_word: { type: Array },
 
