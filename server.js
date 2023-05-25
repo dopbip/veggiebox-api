@@ -16,7 +16,7 @@ const {
     verifyPassword
   } = require('./util');
 const user = require('./db/users');
-const fruits = require('./db/fruits');
+const items = require('./db/items');
 const orders = require('./db/orders')
   const app = express()
   app.use(bodyParser.urlencoded({ extended: false }))
@@ -52,14 +52,14 @@ const orders = require('./db/orders')
     }
   })
 
-  app.get('/api/products/category/fruit_category', async (req, res) => {
+  app.get('/api/products/category/item_category', async (req, res) => {
     try {
-      const fruitsInStore = await fruits.find({qty_in_store: {$gt: 0}})
-      console.log(fruits.find({}))
-      if (_.isEmpty(fruitsInStore)) {
+      const itemsInStore = await items.find({qty_in_store: {$gt: 0}})
+      console.log(items.find({}))
+      if (_.isEmpty(itemsInStore)) {
         res.status(404).send('Out of stock')
       } else {
-        res.status(200).json(fruitsInStore)
+        res.status(200).json(itemsInStore)
       }  //.lean().select("_id role")
       
     }
@@ -68,35 +68,35 @@ const orders = require('./db/orders')
     }
   })
 
-  app.post('/api/products/price/fruit_category', async(req,res) => {
+  app.post('/api/products/price/item_category', async(req,res) => {
     let  data = req.body
     console.log(data)
         let replyMsg = ``
         for (let i = 0; i < data.length; i++) {
          
           const element = data[i];
-          let fruitName = element[0]
+          let itemName = element[0]
           let itemPacksQty = element[1]
           let itemPrice
           try {
-            const queryData = await fruits
+            const queryData = await items
               .find({
                 $and: [
-                  { key_word: { $in: [fruitName.toLowerCase()] } },
+                  { key_word: { $in: [itemName.toLowerCase()] } },
                   { qty_in_store: { $gt: 0 } }
                 ]
               })
               .exec();
               if (_.isEmpty(queryData)) {
-                replyMsg += `${fruitName} _out of stock, will notify you when available._`
+                replyMsg += `${itemName} _out of stock, will notify you when available._`
               } else {
                 if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
                   itemPrice = parseInt(queryData[0].pack_price);
-                  replyMsg += `1 ${queryData[0].package_type} of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
+                  replyMsg += `1 ${queryData[0].package_type} of ${queryData[0].packed_items} ${itemName} will cost k${itemPrice}\n`;
                 } else {
                   console.log(queryData);
                   itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty);
-                  replyMsg += `${itemPacksQty} ${queryData[0].package_type} of ${queryData[0].packed_items} ${fruitName} will cost k${itemPrice}\n`;
+                  replyMsg += `${itemPacksQty} ${queryData[0].package_type} of ${queryData[0].packed_items} ${itemName} will cost k${itemPrice}\n`;
                 }
               }
            
@@ -130,7 +130,7 @@ const orders = require('./db/orders')
       let packageType
 
       try {
-        const queryData = await fruits.find({ key_word: { $in: [itemName.toLowerCase()] } }).exec();
+        const queryData = await items.find({ key_word: { $in: [itemName.toLowerCase()] } }).exec();
         
         if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
           itemPrice = parseInt(queryData[0].pack_price);

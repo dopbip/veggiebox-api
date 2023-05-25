@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const fruitModel = new Schema({
+const itemsModel = new Schema({
   name: { type: String, default: ''},
   pack_price: { type: Number, },
   packed_items: { type: Number, },
@@ -12,4 +12,4 @@ const fruitModel = new Schema({
 
 });
 
-module.exports = mongoose.model('fruits', fruitModel);
+module.exports = mongoose.model('items', itemsModel);
