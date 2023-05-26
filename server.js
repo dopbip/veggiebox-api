@@ -82,7 +82,7 @@ const orders = require('./db/orders')
             const queryData = await items
               .find({
                 $and: [
-                  { key_word: { $in: [itemName.toLowerCase()] } },
+                  { key_word: { $in: [itemNamereplaceAll(" ", "").toLowerCase()] } },
                   { qty_in_store: { $gt: 0 } }
                 ]
               })
@@ -130,7 +130,7 @@ const orders = require('./db/orders')
       let packageType
 
       try {
-        const queryData = await items.find({ key_word: { $in: [itemName.toLowerCase()] } }).exec();
+        const queryData = await items.find({ key_word: { $in: [itemName.replaceAll(" ", "").toLowerCase()] } }).exec();
         
         if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
           itemPrice = parseInt(queryData[0].pack_price);
