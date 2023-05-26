@@ -38,7 +38,7 @@ const orders = require('./db/orders')
         user.create({ phoneNumber }, async (error, data) => {
           if (error) {
             console.error(error);
-            res.status(500).send('Something broke!');
+            res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
           }
           res.status(201)       
         })
@@ -102,7 +102,7 @@ const orders = require('./db/orders')
            
           } catch (error) {
             console.error(error);
-            res.status(500).send('Something broke!');
+            res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
           }
           
         } 
@@ -155,7 +155,7 @@ const orders = require('./db/orders')
         }
       } catch (error) {
         console.error(error);
-        res.status(500).send('Something broke!');
+        res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
       }
 
     }
@@ -173,7 +173,7 @@ const orders = require('./db/orders')
         })
         .catch((error) => {
           console.log(error)
-          res.status(500).send("Something nt right, we are looking into it")
+          res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
         })
   })
   async function connect() {
