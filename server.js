@@ -68,7 +68,7 @@ const orders = require('./db/orders')
     }
   })
 
-  app.post('/api/products/price/item_category', async(req,res) => {
+  app.post('/api/products/price', async(req,res) => {
     let  data = req.body
     console.log(data)
         let replyMsg = ``
