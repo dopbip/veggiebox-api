@@ -180,9 +180,10 @@ const orders = require('./db/orders')
   
       }
     } else {
+      // Insert town cordinates
       // Restrict or deny delivery
       console.log("Delivery not allowed in the specified town.");
-      res.status(500).send(`*I'm sorry, but are not yet you in your town*\n\nFor more details you can chat or call a human `);
+      res.status(500).send(`*I'm sorry, but we are not yet you in your town*\nWe will late you know once we available`);
     }
     
        // Create order
