@@ -131,7 +131,7 @@ const orders = require('./db/orders')
       // Add more positions if needed
     ];
 
-    const townPolygon = turf.polygon([lusakaCoordinates]);
+    const townPolygon = turf.polygon(lusakaCoordinates);
     const user_longitude = data['oderdetails']['location']["longitude"]
     const user_latitude = data['oderdetails']['location']["latitude"]
     console.log(`${user_longitude} <><><> ${user_latitude}`)
