@@ -52,7 +52,7 @@ const orders = require('./db/orders')
     }
   })
 
-  app.get('/api/products/category/item_category', async (req, res) => {
+  app.get('/api/all_items', async (req, res) => {
     try {
       const itemsInStore = await items.find({qty_in_store: {$gt: 0}})
       console.log(items.find({}))
