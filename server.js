@@ -1,6 +1,7 @@
 require('dotenv').config();
 const _ = require('lodash/lang')
 const express = require('express');
+const turf = require('@turf/turf');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('express-jwt');
@@ -120,45 +121,70 @@ const orders = require('./db/orders')
     const {location} = data['oderdetails']
     let orderedItemList = []
     let totalAmount = 0
-    for (let i = 0; i < data['oderdetails']['cart'].length; i++) {
-      const element = data['oderdetails']['cart'][i];
-      console.log(element)
-      console.log('################')
-      let itemName = element[0]
-      let itemPacksQty = element[1]
-      let itemPrice
-      let packageType
+    // Define the town {Lusaka} boundaries as a polygon
+    const longitude1 = "28.133571"
+    const longitude2 = "28.484416"
+    const latitude1 = "-15.414178"
+    const latitude2 = "-15.216749"
 
-      try {
-        const queryData = await items.find({ key_word: { $in: [itemName.replaceAll(" ", "").toLowerCase()] } }).exec();
-        
-        if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
-          itemPrice = parseInt(queryData[0].pack_price);
-          packageType = queryData[0].package_type
-          orderedItemList.push({
-            "itemName": itemName,
-            "itemPrice": itemPrice,
-            "itemPacksQty": itemPacksQty,
-            "packageType": packageType
-          })
-          totalAmount += itemPrice
-        } else {
-          itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty)
-          packageType = queryData[0].package_type
-          orderedItemList.push({
-            "itemName": itemName,
-            "itemPrice": itemPrice,
-            "itemPacksQty": itemPacksQty,
-            "packageType": packageType
-          })
-          totalAmount += itemPrice
+    const townPolygon = turf.polygon([[
+      [longitude1, latitude1],
+      [longitude2, latitude2]
+    ]]);
+    const user_longitude = data['oderdetails']['location']["longitude"]
+    const user_latitude = data['oderdetails']['location']["latitude"]
+    console.log(`${user_longitude} <><><> ${user_latitude}`)
+    // Get the user's coordinates
+    const userCoordinates = turf.point([user_longitude, user_latitude]);
+    // Check if the user's coordinates are within the town boundaries
+    if (turf.booleanPointInPolygon(userCoordinates, townPolygon)) {
+      // Allow delivery
+      console.log("Delivery allowed in the specified town.");
+      for (let i = 0; i < data['oderdetails']['cart'].length; i++) {
+        const element = data['oderdetails']['cart'][i];
+        console.log(element)
+        console.log('################')
+        let itemName = element[0]
+        let itemPacksQty = element[1]
+        let itemPrice
+        let packageType
+  
+        try {
+          const queryData = await items.find({ key_word: { $in: [itemName.replaceAll(" ", "").toLowerCase()] } }).exec();
+          
+          if (parseInt(itemPacksQty) < 1 || itemPacksQty == null) {
+            itemPrice = parseInt(queryData[0].pack_price);
+            packageType = queryData[0].package_type
+            orderedItemList.push({
+              "itemName": itemName,
+              "itemPrice": itemPrice,
+              "itemPacksQty": itemPacksQty,
+              "packageType": packageType
+            })
+            totalAmount += itemPrice
+          } else {
+            itemPrice = parseInt(queryData[0].pack_price) * parseInt(itemPacksQty)
+            packageType = queryData[0].package_type
+            orderedItemList.push({
+              "itemName": itemName,
+              "itemPrice": itemPrice,
+              "itemPacksQty": itemPacksQty,
+              "packageType": packageType
+            })
+            totalAmount += itemPrice
+          }
+        } catch (error) {
+          console.error(error);
+          res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
         }
-      } catch (error) {
-        console.error(error);
-        res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
+  
       }
-
+    } else {
+      // Restrict or deny delivery
+      console.log("Delivery not allowed in the specified town.");
+      res.status(500).send(`*I'm sorry, but are not yet you in your town*\n\nFor more details you can chat or call a human `);
     }
+    
        // Create order
        const orderDetails = Object.assign({}, {
         phoneNumber,
