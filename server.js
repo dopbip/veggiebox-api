@@ -82,7 +82,7 @@ const orders = require('./db/orders')
             const queryData = await items
               .find({
                 $and: [
-                  { key_word: { $in: [itemNamereplaceAll(" ", "").toLowerCase()] } },
+                  { key_word: { $in: [itemName.replaceAll(" ", "").toLowerCase()] } },
                   { qty_in_store: { $gt: 0 } }
                 ]
               })
