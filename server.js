@@ -122,15 +122,16 @@ const orders = require('./db/orders')
     let orderedItemList = []
     let totalAmount = 0
     // Define the town {Lusaka} boundaries as a polygon
-    const longitude1 = "28.133571"
-    const longitude2 = "28.484416"
-    const latitude1 = "-15.414178"
-    const latitude2 = "-15.216749"
+    const lusakaCoordinates = [
+      [-15.4237, 28.2763], // Position 1
+      [-15.4107, 28.3335], // Position 2
+      [-15.3634, 28.3341], // Position 3
+      [-15.3515, 28.2657], // Position 4
+      [-15.3918, 28.2061], // Position 5
+      // Add more positions if needed
+    ];
 
-    const townPolygon = turf.polygon([[
-      [longitude1, latitude1],
-      [longitude2, latitude2]
-    ]]);
+    const townPolygon = turf.polygon([lusakaCoordinates]);
     const user_longitude = data['oderdetails']['location']["longitude"]
     const user_latitude = data['oderdetails']['location']["latitude"]
     console.log(`${user_longitude} <><><> ${user_latitude}`)
