@@ -123,12 +123,11 @@ const orders = require('./db/orders')
     let totalAmount = 0
     // Define the town {Lusaka} boundaries as a polygon
     const lusakaCoordinates = [
-      [28.2763 ,-15.4237], // Position 1
-      [28.3335 ,-15.4107], // Position 2
-      [28.3341 ,-15.3634], // Position 3
-      [28.2657 ,-15.3515], // Position 4
-      [28.2061 ,-15.3918], // Position 5
-      [28.2763 ,-15.4237]
+      [28.2546 ,-15.4547], // Position 1
+      [28.5054 ,-15.4547], // Position 2
+      [28.2546 ,-15.2306], // Position 3
+      [28.5054 ,-15.2306], // Position 4
+      [28.2546 ,-15.4547]
       // Add more positions if needed
     ];
 
