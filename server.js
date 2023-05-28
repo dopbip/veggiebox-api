@@ -5,6 +5,7 @@ const turf = require('@turf/turf');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 var { expressjwt: jwt } = require("express-jwt");
+var randomstring = require("randomstring");
 const dayjs = require('dayjs');
 const cookieParser = require('cookie-parser');
 const jwtDecode = require('jwt-decode');
@@ -16,7 +17,7 @@ const {
     hashPassword,
     verifyPassword
   } = require('./util');
-const user = require('./db/users');
+const users = require('./db/users');
 const items = require('./db/items');
 const orders = require('./db/orders');
 const { all } = require('underscore');
@@ -34,10 +35,10 @@ const { all } = require('underscore');
   app.post('/api/checkUser', async (req, res) => {
     const { phoneNumber } = req.body;
     try {
-      const userData = await user.find({phoneNumber:phoneNumber})
+      const userData = await users.find({phoneNumber:phoneNumber})
       
       if (_.isEmpty(userData)) {
-        user.create({ phoneNumber }, async (error, data) => {
+        users.create({ phoneNumber }, async (error, data) => {
           if (error) {
             console.error(error);
             res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
@@ -320,7 +321,7 @@ const requireAuth = jwt({
 
 app.post("/api/vb_delivery_service/all_pending",requireAuth, async(req, res) => {
   try {
-    const allPendingOders = await orders.find({status: "Pending"})
+    const allPendingOders = await orders.find({status: "Pending"}).exec();
     if (_.isElement(all)) {
       res.status(404).send('No pending orders')
     } else {
@@ -331,6 +332,49 @@ app.post("/api/vb_delivery_service/all_pending",requireAuth, async(req, res) => 
   }
 })
 
+/// Create delivery user ///
+app.post('/api/add_delivery_user',
+  async (req, res) => {
+    //console.log(req)name
+    
+    try {
+      const {phoneNumber, role} = req.body
+      let deliveryUser = await users.findOne({
+        phoneNumber
+      }).lean().exec();
+
+      if (_.isEmpty(deliveryUser)) {
+        return res.status(300)
+        .json({ message: 'Delivery user already exists' });
+      } else {
+        // Generate pin
+        let pin = hashPassword(randomstring.generate({
+          length: 4,
+          charset: 'numeric'
+        }))
+        
+        // create user
+        let userData = await users.create({
+          phoneNumber, 
+          pin: pin,
+          role
+        })
+        userData.save()
+        .then(() => {
+          res.status(201).json(userData)
+        })
+        .catch((error) => {
+          console.log(error)
+          res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
+        })
+      }
+    
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json('There was a problem creating delivery user');
+    }
+  }
+);
 
   async function connect() {
     try {
