@@ -211,12 +211,6 @@ const { all } = require('underscore');
                   ///  Mobile app Delivery app  ////
                   ///////////////////////////////////
 
-// const requireAuth = jwt({
-//   secret: process.env.JWT_SECRET,
-//   audience: 'api.veggieBox.mobileApp',
-//   issuer: 'api.veggieBox.mobileApp',
-//   getToken: req => req.body.token
-// });
 
 app.post('/api/deliveryUserOtpVerify', async (req, res) => {
   try {
@@ -295,7 +289,35 @@ app.post('/api/deliveryUserOtpVerify', async (req, res) => {
   }
 });
 
-app.post("/api/vb_delivery_service/all_pending", async(req, res) => {
+const attachUser = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: 'Authentication invalid' });
+  }
+  const decodedToken = jwtDecode(token.slice(7));
+
+  if (!decodedToken) {
+    return res.status(401).json({
+      message: 'There was a problem authorizing the request'
+    });
+  } else {
+    req.user = decodedToken;
+    next();
+  }
+};
+
+app.use(attachUser);
+
+const requireAuth = jwt({
+  secret: process.env.JWT_SECRET,
+  audience: 'api.veggieBox.mobileApp',
+  issuer: 'api.veggieBox.mobileApp',
+  getToken: req => req.body.token
+});
+
+app.post("/api/vb_delivery_service/all_pending",requireAuth, async(req, res) => {
   try {
     const allPendingOders = await orders.find({status: "Pending"})
     if (_.isElement(all)) {
