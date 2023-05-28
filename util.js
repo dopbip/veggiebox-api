@@ -12,8 +12,8 @@ const createToken = user => {
       sub: user._id,
       //email: user.email,
       role: user.role,
-      iss: 'api.youllet.mobileApp',
-      aud: 'api.youllet.mobileApp'
+      iss: 'api.veggieBox.mobileApp',
+      aud: 'api.veggieBox.mobileApp'
     },
     process.env.JWT_SECRET,
     { algorithm: 'HS256' } //expiresIn: '1h'

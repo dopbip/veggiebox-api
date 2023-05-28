@@ -18,7 +18,8 @@ const {
   } = require('./util');
 const user = require('./db/users');
 const items = require('./db/items');
-const orders = require('./db/orders')
+const orders = require('./db/orders');
+const { all } = require('underscore');
   const app = express()
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json());
@@ -204,6 +205,110 @@ const orders = require('./db/orders')
           res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
         })
   })
+
+                  ///////////////////////////////////
+                  ////                            ///
+                  ///  Mobile app Delivery app  ////
+                  ///////////////////////////////////
+
+const requireAuth = jwt({
+  secret: process.env.JWT_SECRET,
+  audience: 'api.veggieBox.mobileApp',
+  issuer: 'api.veggieBox.mobileApp',
+  getToken: req => req.body.token
+});
+
+app.post('/api/deliveryUserOtpVerify', async (req, res) => {
+  try {
+    const { phoneNumber, pin } = req.body;
+    const user = await clientUser.findOne({
+      phoneNumber: phoneNumber
+    }).lean();
+
+    if (!user) {
+      return res.status(403).json({
+        errorMsg: 'WRONG_AUTH'
+      });
+    }
+
+    const passwordValid = await verifyPassword(
+      pin,
+      user.password
+    );
+
+    if (passwordValid) {
+      
+      const { 
+        //firstName, 
+        //lastName, 
+        //phoneNumber, 
+        role, 
+        _id,
+        //phoneNumber 
+       } = user;
+      const userInfo = Object.assign(
+        {}, 
+        { 
+          // firstName, 
+          // lastName,
+          // phoneNumber, 
+          role, 
+          _id,
+          //phoneNumber 
+         });
+      if (user.otpState == 1) {
+        const token = createToken(userInfo);
+        const decodedToken = jwtDecode(token);
+        const expiresAt = decodedToken.exp;
+        res.cookie('token', token, {httpOnly: true});
+        res.status(201).json({
+          errorMsg: 'OTP_UPDATE',
+          token,
+          userInfo,
+          expiresAt
+        });
+      } 
+      else {
+        const token = createToken(userInfo);
+        const decodedToken = jwtDecode(token);
+        const expiresAt = decodedToken.exp;
+        //res.cookie('token', token, {httpOnly: true});
+        res.status(200).json({
+          errorMsg: 'SUCCESS_AUTH',
+          token,
+          userInfo,
+          expiresAt
+        });
+      }
+      
+    }
+     else {
+      res.status(401).json({
+        errorMsg: 'WRONG_AUTH'
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(400)
+      .json({ errorMsg: 'UNKNOWN_AUTH_ERROR' });
+  }
+});
+
+app.post("/api/vb_delivery_service/all_pending", async(req, res) => {
+  try {
+    const allPendingOders = await orders.find({status: Pending})
+    if (_.isElement(all)) {
+      res.status(404).send('No pending orders')
+    } else {
+      res.status(200).json(allPendingOders)
+    }
+  } catch (error) {
+    
+  }
+})
+
+
   async function connect() {
     try {
       mongoose.Promise = global.Promise;
