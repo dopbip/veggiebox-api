@@ -117,7 +117,7 @@ const orders = require('./db/orders')
     console.log(JSON.stringify(data, undefined,2))
     console.log(data['oderdetails']['cart'])
     console.log('################000')
-    const {phoneNumber} = data['oderdetails']
+    const {recipientPhone} = data['oderdetails']
     const {location} = data['oderdetails']
     let orderedItemList = []
     let totalAmount = 0
@@ -189,7 +189,7 @@ const orders = require('./db/orders')
     
        // Create order
        const orderDetails = Object.assign({}, {
-        phoneNumber,
+        recipientPhone,
         location,
         itemOrdered: orderedItemList,
         totalAmount: totalAmount
