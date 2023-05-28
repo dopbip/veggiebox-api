@@ -290,26 +290,26 @@ app.post('/api/deliveryUserOtpVerify', async (req, res) => {
   }
 });
 
-const attachUser = (req, res, next) => {
-  const token = req.headers.authorization;
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: 'Authentication invalid' });
-  }
-  const decodedToken = jwtDecode(token.slice(7));
+// const attachUser = (req, res, next) => {
+//   const token = req.body.token;
+//   if (!token) {
+//     return res
+//       .status(401)
+//       .json({ message: 'Authentication invalid' });
+//   }
+//   const decodedToken = jwtDecode(token.slice(7));
 
-  if (!decodedToken) {
-    return res.status(401).json({
-      message: 'There was a problem authorizing the request'
-    });
-  } else {
-    req.user = decodedToken;
-    next();
-  }
-};
+//   if (!decodedToken) {
+//     return res.status(401).json({
+//       message: 'There was a problem authorizing the request'
+//     });
+//   } else {
+//     req.user = decodedToken;
+//     next();
+//   }
+// };
 
-app.use(attachUser);
+// app.use(attachUser);
 
 // const requireAuth = jwt({
 //   secret: process.env.JWT_SECRET,
