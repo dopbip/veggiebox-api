@@ -211,12 +211,12 @@ const { all } = require('underscore');
                   ///  Mobile app Delivery app  ////
                   ///////////////////////////////////
 
-const requireAuth = jwt({
-  secret: process.env.JWT_SECRET,
-  audience: 'api.veggieBox.mobileApp',
-  issuer: 'api.veggieBox.mobileApp',
-  getToken: req => req.body.token
-});
+// const requireAuth = jwt({
+//   secret: process.env.JWT_SECRET,
+//   audience: 'api.veggieBox.mobileApp',
+//   issuer: 'api.veggieBox.mobileApp',
+//   getToken: req => req.body.token
+// });
 
 app.post('/api/deliveryUserOtpVerify', async (req, res) => {
   try {
