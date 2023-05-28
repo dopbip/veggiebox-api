@@ -297,7 +297,7 @@ app.post('/api/deliveryUserOtpVerify', async (req, res) => {
 
 app.post("/api/vb_delivery_service/all_pending", async(req, res) => {
   try {
-    const allPendingOders = await orders.find({status: Pending})
+    const allPendingOders = await orders.find({status: "Pending"})
     if (_.isElement(all)) {
       res.status(404).send('No pending orders')
     } else {
