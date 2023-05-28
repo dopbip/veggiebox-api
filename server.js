@@ -314,6 +314,7 @@ const requireAuth = jwt({
   secret: process.env.JWT_SECRET,
   audience: 'api.veggieBox.mobileApp',
   issuer: 'api.veggieBox.mobileApp',
+  algorithms: ["HS256"],
   getToken: req => req.body.token
 });
 
