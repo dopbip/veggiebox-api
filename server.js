@@ -344,9 +344,6 @@ app.post('/api/add_delivery_user',
       }).lean().exec();
 
       if (_.isEmpty(deliveryUser)) {
-        return res.status(300)
-        .json({ message: 'Delivery user already exists' });
-      } else {
         // Generate pin
         let pin = hashPassword(randomstring.generate({
           length: 4,
@@ -367,6 +364,10 @@ app.post('/api/add_delivery_user',
           console.log(error)
           res.status(500).send('Something bro00ooke!🤖⚡. We are looking into it\nPlease again later');
         })
+        
+      } else {
+        return res.status(300)
+        .json({ message: 'Delivery user already exists' });
       }
     
     } catch (err) {
