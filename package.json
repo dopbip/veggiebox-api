@@ -30,6 +30,7 @@
     "underscore": "^1.13.4"
   },
   "devDependencies": {
+    "@types/jwt-decode": "^3.1.0",
     "nodemon": "^2.0.4"
   }
 }
