@@ -353,7 +353,7 @@ app.post('/api/add_delivery_user',
         // create user
         let userData = await users.create({
           phoneNumber, 
-          pin: pin,
+          pin: pin.toString(),
           role
         })
         userData.save()
