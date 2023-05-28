@@ -304,7 +304,7 @@ app.post("/api/vb_delivery_service/all_pending", async(req, res) => {
       res.status(200).json(allPendingOders)
     }
   } catch (error) {
-    
+    console.log(error)
   }
 })
 
