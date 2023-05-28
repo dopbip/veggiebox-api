@@ -8,7 +8,7 @@ const userModel = new Schema({
   phoneNumber: { type: String, require: true,},
   createdOn: { type: String, require: true, default: dayjs().format('DD-MM-YYYY') },
   role: { type: String,  default: 'normal_user' },
-  
+  pin: {type: String}
 });
 
 module.exports = mongoose.model('users', userModel);
