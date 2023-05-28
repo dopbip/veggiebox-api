@@ -2,6 +2,7 @@ require('dotenv').config();
 const _ = require('lodash/lang')
 const express = require('express');
 const turf = require('@turf/turf');
+const jwt = require('express-jwt');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('express-jwt');
