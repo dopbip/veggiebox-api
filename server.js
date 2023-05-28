@@ -349,7 +349,7 @@ app.post('/api/add_delivery_user',
           length: 4,
           charset: 'numeric'
         })
-        let pin = hashPassword(randString)
+        let pin = await hashPassword(randString)
         console.log(pin)
         // create user
         let userData = await users.create({
