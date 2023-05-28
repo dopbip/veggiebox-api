@@ -359,7 +359,7 @@ app.post('/api/add_delivery_user',
         })
         userData.save()
         .then(() => {
-          res.status(201).json(userData)
+          res.status(201).json({"pin": pin})
         })
         .catch((error) => {
           console.log(error)
