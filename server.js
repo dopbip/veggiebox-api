@@ -350,7 +350,7 @@ app.post('/api/add_delivery_user',
           charset: 'numeric'
         })
         let pin = await hashPassword(randString)
-        console.log(pin)
+        console.log(randString)
         // create user
         let userData = await users.create({
           phoneNumber, 
@@ -359,7 +359,7 @@ app.post('/api/add_delivery_user',
         })
         userData.save()
         .then(() => {
-          res.status(201).json({"pin": pin})
+          res.status(201).json({"pin": randString})
         })
         .catch((error) => {
           console.log(error)
