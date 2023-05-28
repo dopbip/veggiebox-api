@@ -345,15 +345,16 @@ app.post('/api/add_delivery_user',
 
       if (_.isEmpty(deliveryUser)) {
         // Generate pin
-        let pin = hashPassword(randomstring.generate({
+        let randString = randomstring.generate({
           length: 4,
           charset: 'numeric'
-        }))
+        })
+        let pin = hashPassword(randString)
         console.log(pin)
         // create user
         let userData = await users.create({
           phoneNumber, 
-          pin: pin.toString(),
+          pin: pin,
           role
         })
         userData.save()
