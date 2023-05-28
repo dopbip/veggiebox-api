@@ -311,15 +311,15 @@ const attachUser = (req, res, next) => {
 
 app.use(attachUser);
 
-const requireAuth = jwt({
-  secret: process.env.JWT_SECRET,
-  audience: 'api.veggieBox.mobileApp',
-  issuer: 'api.veggieBox.mobileApp',
-  algorithms: ["HS256"],
-  getToken: req => req.body.token
-});
+// const requireAuth = jwt({
+//   secret: process.env.JWT_SECRET,
+//   audience: 'api.veggieBox.mobileApp',
+//   issuer: 'api.veggieBox.mobileApp',
+//   algorithms: ["HS256"],
+//   getToken: req => req.body.token
+// });
 
-app.post("/api/vb_delivery_service/all_pending",requireAuth, async(req, res) => {
+app.post("/api/vb_delivery_service/all_pending", async(req, res) => {
   try {
     const allPendingOders = await orders.find({status: "Pending"}).exec();
     if (_.isElement(all)) {
