@@ -382,9 +382,6 @@ app.post('/api/add_delivery_user',
     try {
       mongoose.Promise = global.Promise;
       mongoose.connect(process.env.ATLAS_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
       });
     } catch (err) {
       console.log('Mongoose error', err);
