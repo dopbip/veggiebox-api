@@ -60,7 +60,7 @@ const { all } = require('underscore');
       const itemsInStore = await items.find({qty_in_store: {$gt: 0}})
       console.log(items.find({}))
       if (_.isEmpty(itemsInStore)) {
-        res.status(404).send('Out of stock')
+        res.status(404).send('Out of Otock')
       } else {
         res.status(200).json(itemsInStore)
       }  //.lean().select("_id role")
